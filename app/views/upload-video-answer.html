@@ -1,0 +1,76 @@
+<main-menu></main-menu>
+
+<div class="main-background">
+
+  <header class="upload">
+    <div class="header-background-container upload-background-container"></div>
+    <div class="header-background upload-answer-header-background"></div>
+    <h1 class="upload-answer-header-title">
+      Add a video from this site:
+      <br>
+      <span class="yellow-link">{{uploadVideoAnswer.localSelected.title}}</span>
+    </h1>
+  </header>
+
+  <div class="instructions-container upload-answer-instructions-container">
+    <div class="instruction">
+      <img src="../images/landscape-icon.svg">
+      <br>
+      <span>{{uploadVideoAnswer.rootService.languageText.upload_instruction_1}}</span>
+    </div>
+    <div class="instruction">
+      <img src="../images/duration-icon.svg">
+      <br>
+      <span>{{uploadVideoAnswer.rootService.languageText.upload_instruction_2}}</span>
+    </div>
+    <div class="instruction">
+      <img src="../images/polite-icon.svg">
+      <br>
+      <span>{{uploadVideoAnswer.rootService.languageText.upload_instruction_3}}</span>
+    </div>
+    <div class="instruction">
+      <img src="../images/check-icon.svg">
+      <br>
+      <span>{{uploadVideoAnswer.rootService.languageText.upload_instruction_4}}</span>
+    </div>
+  </div>
+
+  <form class="upload-form">
+
+    <input type="text" placeholder="{{uploadVideoAnswer.rootService.languageText.upload_new_title}}" ng-model="uploadVideoAnswer.newVideo.title">
+
+    <textarea placeholder="{{uploadVideoAnswer.rootService.languageText.upload_description}}" ng-model="uploadVideoAnswer.newVideo.description"></textarea>
+
+    <input class="inputfile upload-answer-inputfile" id="loadFile" type="file" accept="video/*" ng-model="uploadVideoAnswer.newVideo.video" onchange="angular.element(this).scope().getVideoFromInput()">
+    <label for="loadFile">{{uploadVideoAnswer.rootService.languageText.upload_record_button}}</label>
+
+    <video id="preview" controls preload="auto" src=""></video>
+
+    <input class="term-checkbox" id="terms" type="checkbox" name="terms" ng-model="uploadVideoAnswer.newVideo.terms">
+    <label for="terms"><a class="yellow-link" ng-click="uploadVideoAnswer.goToTerms()">{{uploadVideoAnswer.rootService.languageText.upload_accept_terms}}</a></label>
+
+    <input class="button-submit" type="submit" value="{{uploadVideoAnswer.rootService.languageText.upload_send_button}}" ng-click="uploadVideoAnswer.sendVideo()">
+
+  </form>
+
+  <div class="popup-bg upload-bg"
+       ng-if="uploadVideoAnswer.openMessageWindow == true">
+    <div class="popup upload-popup">
+
+      <div class="popup-upload-icon upload-check-icon" ng-show="uploadVideoAnswer.successUpload === true">
+        <span class="fas fa-check"></span>
+      </div>
+
+      <div class="popup-upload-icon upload-error-icon" ng-show="uploadVideoAnswer.successUpload === false">
+        <span class="fas fa-times"></span>
+      </div>
+
+      <p>{{uploadVideoAnswer.successMessage}}</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="local-uploading-container" ng-show="uploadVideoAnswer.videoService.uploadingVideo">
+  <div class="local-upload-icon"></div>
+</div>

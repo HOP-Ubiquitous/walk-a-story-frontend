@@ -1,0 +1,296 @@
+<main-menu></main-menu>
+
+<div ng-hide="('walks.location' | routeSegmentStartsWith)">
+
+  <div class="place-header" ng-class="{'place-header-40' : singleWalk.headerTitle !== ''}">
+    <h2>{{singleWalk.headerTitle}}</h2>
+  </div>
+
+  <div class="empty-container"
+       ng-show="profile.videoServiceData.videoList.videos.length === 0">
+
+    <div class="empty-icon">
+      <span class="fas fa-video-slash"></span>
+    </div>
+
+    <p>{{singleWalk.rootService.languageText.profile_no_videos}}
+      <br>
+      {{singleWalk.rootService.languageText.profile_no_videos2}}
+      <a ng-click="singleWalk.goToUpload()">{{singleWalk.rootService.languageText.profile_upload_title}}</a>
+    </p>
+
+  </div>
+
+  <div class="video-target">
+
+    <div class="video-user-container">
+
+      <div class="video-status-container status-private"
+           ng-class="{ 'status-invisible' : singleWalk.userServiceData.users.admin === false }"
+           ng-show="video.file_public === false && video.file_status !== 6">
+
+        <div class="video-status-icon-container status-private">
+          <span class="fas fa-lock video-status-icon"></span>
+          <span class="status">Private</span>
+        </div>
+      </div>
+
+      <div class="video-status-container status-public"
+           ng-class="{ 'status-invisible' : singleWalk.userServiceData.users.admin === false }"
+           ng-show="video.file_public === true && video.file_status !== 6">
+
+        <div class="video-status-icon-container status-public">
+          <span class="fas fa-lock-open video-status-icon"></span>
+          <span class="status">Published</span>
+        </div>
+      </div>
+
+      <div class="video-status-container status-deleted"
+           ng-class="{ 'status-invisible' : singleWalk.userServiceData.users.admin === false }"
+           ng-show="video.file_status === 6">
+
+        <div class="video-status-icon-container status-deleted">
+          <span class="fas fa-trash-alt video-status-icon"></span>
+          <span class="status">Deleted</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rating-container">
+      <div class="star-container" ng-repeat="rating in home.ratingArray[singleWalk.caminata_id]">
+        <span class="{{rating.star}}"></span>
+      </div>
+    </div>
+
+
+    <img class="walk-image" src="{{ singleWalk.walk.image || '../images/upload-background.jpg' }}">
+
+    <div class="title-container">
+      <h5>{{singleWalk.walk.title || 'Untitle'}}</h5>
+      <span>{{singleWalk.walk.participants.length}} participants | {{ singleWalk.walk.date | date: 'yyyy-MM-dd HH:mm'}}</span>
+    </div>
+
+    <div class="social-container">
+
+      <div class="button-social"
+           ng-click="socialPopup = true"
+           ng-class="{ 'button-social-active' : share }">
+        <span class="fas fa-share"></span>
+        <br>
+        <span>Share</span>
+      </div>
+    </div>
+
+    <div class="description-container">
+      <span>{{singleWalk.walk.description || 'Without Description'}}</span>
+    </div>
+
+    <div class="walk-buttons-container">
+
+      <div class="sign-up-walk-button" ng-show="singleWalk.walk.subscription === false" ng-click="singleWalk.signUpWalk(singleWalk.walk.caminata_id)">
+        <span class="fas fa-hiking"></span>
+        <span class="sign-up-walk-text-button">Sign Up for the Walk</span>
+      </div>
+
+      <div class="subscribed-walk-button" ng-show="singleWalk.walk.subscription === true">
+        <span class="fas fa-check"></span>
+        <span class="sign-up-walk-text-button">Inscrito</span>
+      </div>
+
+      <div class="gps-walk-button" ng-click="singleWalk.goToLocationWalk(singleWalk.walk.place_id, singleWalk.walk.caminata_id)">
+        <span class="fas fa-map-marker-alt"></span>
+      </div>
+
+    </div>
+
+    <div class="admin-options" ng-show="singleWalk.userServiceData.users.admin === true">
+
+      <button class="admin-button delete-button"
+              ng-click="deletePopup = true">
+        <span class="fas fa-trash-alt"></span>Delete
+      </button>
+
+      <button class="admin-button"
+              ng-click="infoPopup = true">
+        <span class="fas fa-users"></span>Participants
+      </button>
+
+    </div>
+
+    <div class="popup-bg" ng-show="socialPopup">
+      <div class="popup social-popup">
+
+        <div class="button-menu social-close"
+             ng-click="socialPopup = false">
+          <span class="fas fa-times"></span>
+        </div>
+
+        <div class="popup-social-icon">
+          <span class="fas fa-share"></span>
+        </div>
+        <h1 class="popup-social-title">Share {{singleWalk.walk.title || 'Untitle'}}</h1>
+
+        <a socialshare
+           socialshare-provider="facebook"
+           socialshare-via="424890874779971"
+           socialshare-type="feed"
+           socialshare-media="http://localhost:9000/#/walks/{{singleWalk.walk.caminata_id}}"
+           socialshare-description="'Sign up for this walk '{{singleWalk.walk.title}}' on {{singleWalk.walk.date | date: 'yyyy-MM-dd HH:mm'}} from {{singleWalk.walk.address}} in http://localhost:9000/#/walks/{{singleWalk.walk.caminata_id}}. ' + <br> + 'See more walks in Walk a Story. https://br.hopu.eu/'"
+           socialshare-url="https://br.hopu.eu/">
+          <span class="fab fa-facebook-square"></span>
+          <span>Facebook</span>
+        </a>
+
+        <a socialshare
+           socialshare-provider="twitter"
+           socialshare-text="Sign up for this walk '{{singleWalk.walk.title}}' on {{singleWalk.walk.date | date: 'yyyy-MM-dd HH:mm'}} from {{singleWalk.walk.address}} in https://br.hopu.eu/#/walks/{{singleWalk.walk.caminata_id}}.
+
+See more walks in Walk a Story. https://br.hopu.eu/
+
+"
+           socialshare-hashtags="walkastory, {{singleWalk.walk.place_id}}"
+           socialshare-url="https://br.hopu.eu/">
+          <span class="fab fa-twitter-square"></span>
+          <span>Twitter</span>
+        </a>
+
+        <a socialshare
+           socialshare-provider="whatsapp"
+           socialshare-text="Sign up for this walk '{{singleWalk.walk.title}}' on {{singleWalk.walk.date | date: 'yyyy-MM-dd HH:mm'}} from {{singleWalk.walk.address}} in https://br.hopu.eu/#/walks/{{singleWalk.walk.caminata_id}}.
+
+See more walks in Walk a Story. https://br.hopu.eu/"
+           socialshare-url="https://br.hopu.eu/">
+          <span class="fab fa-whatsapp-square"></span>
+          <span>Whatsapp</span>
+        </a>
+
+        <a socialshare
+           socialshare-provider="telegram"
+           socialshare-text="Sign up for this walk '{{singleWalk.walk.title}}' on {{singleWalk.walk.date | date: 'yyyy-MM-dd HH:mm'}} from {{singleWalk.walk.address}} in https://br.hopu.eu/#/walks/{{singleWalk.walk.caminata_id}}.
+
+See more walks in Walk a Story. https://br.hopu.eu/"
+           socialshare-url="https://br.hopu.eu/">
+          <span class="fab fa-telegram"></span>
+          <span>Telegram</span>
+        </a>
+
+        <a socialshare
+           socialshare-provider="facebook-messenger"
+           socialshare-url="https://br.hopu.eu/">
+          <span class="fab fa-facebook-messenger"></span>
+          <span>Facebook Messenger</span>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="popup-bg" ng-show="deletePopup">
+      <div class="popup">
+        <div class="popup-status-icon delete-icon">
+          <span class="fas fa-trash-alt"></span>
+        </div>
+        <h1 class="popup-video-title">{{singleWalk.walk.title || 'Untitle'}}</h1>
+        <p>Are you sure to delete the walk?</p>
+        <div class="admin-options popup-options" ng-show="singleWalk.userServiceData.users.admin === true">
+          <button class="admin-button" ng-click="deletePopup = false">Cancel</button>
+          <button class="admin-button delete-button" ng-click="singleWalk.deleteWalk(singleWalk.walk.caminata_id); deletePopup = false">
+            <span class="fas fa-trash-alt"></span>Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-bg" ng-show="infoPopup">
+      <div class="popup">
+        <div class="popup-users-icon publish-icon">
+          <span class="fas fa-users"></span>
+        </div>
+        <h5 class="popup-video-title">{{singleWalk.walk.title || 'Untitle'}}</h5>
+        <p>Participant List</p>
+
+        <div class="participants-container">
+
+          <div class="participant-row" ng-repeat="participant in singleWalk.participants">
+
+            <div class="participant-left">
+              <div class="participant-left-inner">
+                <span class="fas fa-hiking"></span>
+              </div>
+            </div>
+
+            <div class="participant-right">
+              <p><span>User:</span> {{participant.name}}</p>
+              <p><span>Mail:</span> {{participant.email}}</p>
+            </div>
+
+            <div class="participant-years">
+              <p>Years:</p>
+              <p>{{walks.getAge(participant.birth_date)}}</p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="admin-options popup-options" ng-show="walks.userServiceData.users.admin === true">
+          <button class="admin-button" ng-click="infoPopup = false">Cancel</button>
+          <button class="admin-button" ng-click="walks.downloadPDF(singleWalk.walk); infoPopup = false"><span class="fas fa-file-download"></span>Download List</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-bg" ng-show="deletePopup">
+      <div class="popup">
+        <div class="popup-status-icon delete-icon">
+          <span class="fas fa-trash-alt"></span>
+        </div>
+        <h1 class="popup-video-title">{{walk.title || 'Untitle'}}</h1>
+        <p>Are you sure to delete the walk?</p>
+        <div class="admin-options popup-options" ng-show="singleWalk.userServiceData.users.admin === true">
+          <button class="admin-button" ng-click="deletePopup = false">Cancel</button>
+          <button class="admin-button delete-button" ng-click="singleWalk.deleteWalk(walk.caminata_id); deletePopup = false"><span class="fas fa-trash-alt"></span>Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-bg" ng-show="signUpPopup[singleWalk.walk.caminata.id]">
+      <div class="popup">
+
+        <div class="popup-inner">
+          <div class="popup-status-icon undelete-button">
+            <span class="fas fa-hiking"></span>
+          </div>
+          <h1 class="popup-video-title">{{singleWalk.walk.title || 'Untitle'}}</h1>
+          <p>Are you sure to sign up to this walk?</p>
+        </div>
+
+        <div class="admin-options popup-options">
+          <button class="admin-button" ng-click="signUpPopup[singleWalk.walk.caminata_id] = false">Cancel</button>
+          <button class="admin-button undelete-button"
+                  ng-click="singleWalk.walk.signUpWalk(singleWalk.walk.caminata_id); signUpPopup[singleWalk.walk.caminata_id] = false"><span
+            class="fas fa-hiking"></span>Sign Up Walk
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-bg walks-bg"
+         ng-if="singleWalk.openMessageWindow == true">
+      <div class="popup walks-popup">
+
+        <div class="popup-upload-icon upload-check-icon" ng-show="singleWalk.successUpload === true">
+          <span class="fas fa-check"></span>
+        </div>
+
+        <div class="popup-upload-icon upload-error-icon" ng-show="singleWalk.successUpload === false">
+          <span class="fas fa-times"></span>
+        </div>
+
+        <p>{{singleWalk.successMessage}}</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>

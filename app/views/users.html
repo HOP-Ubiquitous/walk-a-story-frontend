@@ -1,0 +1,100 @@
+<main-menu></main-menu>
+
+<div class="home-background">
+
+  <header class="home-header">
+    <h1>{{users.rootService.languageText.users_title}}</h1>
+  </header>
+
+  <div class="gallery-container">
+
+    <div class="users-target"
+         ng-repeat="user in users.getUserList()">
+
+      <div class="users-target-container">
+        <div class="users-container">
+          <span class="fas fa-user-shield" ng-show="user.admin === true"></span>
+          <span class="fas fa-user" ng-show="user.admin === false"></span>
+        </div>
+
+        <div class="users-info">
+          <p><span class="users-info-title">{{users.rootService.languageText.users_alias}}</span> <span>{{user.username}}</span></p>
+          <p><span class="users-info-title">{{users.rootService.languageText.users_name}}</span> <span>{{user.name}}</span></p>
+          <p><span class="users-info-title">{{users.rootService.languageText.users_email}}</span> <span>{{user.email}}</span></p>
+        </div>
+      </div>
+
+      <div class="users-options">
+
+        <button class="users-button private-button"
+                ng-show="user.admin === false"
+                ng-click="updateRolePopup = true">
+          <span class="fas fa-shield-alt"></span>
+        </button>
+
+        <button class="users-button undelete-button"
+                ng-show="user.admin === true && user.username !== 'admin'"
+                ng-click="downgradeRolePopup = true">
+          <span class="fas fa-shield-alt"></span>
+        </button>
+
+        <button class="users-button delete-button"
+                ng-show="user.admin === false"
+                ng-click="deletePopup = true">
+          <span class="fas fa-trash-alt"></span>
+        </button>
+
+        <pop-up show="deletePopup"
+                icon-circle="delete-icon"
+                icon="fas fa-trash-alt"
+                title="user.username"
+                question="{{users.rootService.languageText.users_delete_user}}"
+                show-buttons="users.userServiceData.users.admin === true"
+                cancel-button="true"
+                delete-button="true"
+                delete-function="users.deleteUserByAdmin(user)"
+                un-delete-button="false"
+                private-button="false"
+                publish-button="false"
+                update-rol-button="false"
+                downgrade-rol-button="false">
+        </pop-up>
+
+        <pop-up show="updateRolePopup"
+                icon-circle="private-icon"
+                icon="fas fa-shield-alt"
+                title="user.username"
+                question="{{users.rootService.languageText.user_privileges_admin_text}}"
+                show-buttons="users.userServiceData.users.admin === true"
+                cancel-button="true"
+                delete-button="false"
+                un-delete-button="false"
+                private-button="false"
+                publish-button="false"
+                update-rol-button="true"
+                update-rol-function="users.upgradeRole(user)"
+                downgrade-rol-button="false">
+        </pop-up>
+
+        <pop-up show="downgradeRolePopup"
+                icon-circle="undelete-icon"
+                icon="fas fa-shield-alt"
+                title="user.username"
+                question="{{users.rootService.languageText.user_downgrade_text}}"
+                show-buttons="users.userServiceData.users.admin === true"
+                cancel-button="true"
+                delete-button="false"
+                un-delete-button="false"
+                private-button="false"
+                publish-button="false"
+                update-rol-button="false"
+                downgrade-rol-button="true"
+                downgrade-rol-function="users.downgradeRole(user)">
+        </pop-up>
+
+    </div>
+
+  </div>
+
+</div>
+</div>

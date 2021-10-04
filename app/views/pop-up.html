@@ -1,0 +1,30 @@
+<div class="popup-bg" ng-show="show">
+  <div class="popup">
+    <div class="popup-status-icon {{iconCircle}}">
+      <span class="{{icon}}"></span>
+    </div>
+    <h1 class="popup-video-title">{{title || 'Untitle'}}</h1>
+    <p>{{question}}</p>
+    <div class="admin-options popup-options" ng-show="showButtons">
+      <button ng-show="cancelButton" class="admin-button" ng-click="show = false">
+        {{popUp.rootService.languageText.post_confirm_private_button_cancel}}
+      </button>
+      <button ng-show="deleteButton" class="admin-button delete-button" ng-click="deleteFunction(); show = false"><span class="fas fa-trash-alt"></span>
+        {{popUp.rootService.languageText.post_confirm_delete_button}}
+      </button>
+      <button ng-show="unDeleteButton" class="admin-button undelete-button" ng-click="unDeleteFunction(); show = false"><span class="fas fa-undo-alt"></span>Undelete</button>
+      <button ng-show="privateButton" class="admin-button private-button" ng-click="privateFunction(); show = false"><span class="fas fa-lock"></span>
+        {{popUp.rootService.languageText.post_confirm_private_button}}
+      </button>
+      <button ng-show="publishButton" class="admin-button" ng-click="publishFunction(); show = false"><span class="fas fa-lock-open"></span>
+        {{popUp.rootService.languageText.post_confirm_publish_button}}
+      </button>
+      <button ng-show="updateRolButton" class="admin-button private-button" ng-click="updateRolFunction(); updateRolePopup = false"><span class="fas fa-shield-alt"></span>
+        {{popUp.rootService.languageText.user_privileges_admin_upgrade}}
+      </button>
+      <button ng-show="downgradeRolButton" class="admin-button undelete-button" ng-click="downgradeRolFunction(); downgradeRolePopup = false"><span class="fas fa-shield-alt"></span>
+        {{popUp.rootService.languageText.user_downgrade_button}}
+      </button>
+    </div>
+  </div>
+</div>

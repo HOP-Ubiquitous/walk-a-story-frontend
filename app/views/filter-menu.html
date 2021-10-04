@@ -1,0 +1,165 @@
+<div class="filter-city-button"
+     ng-show="('language.home.place_id.poi_id.video_id' | routeSegmentStartsWith) ||
+              ('language.walks.place_id.walks_id' | routeSegmentStartsWith) ||
+              ('language.local_ecosystem.type_id.subtype_id.local_id' | routeSegmentEqualsTo) ||
+              ('language.local_ecosystem.add_local' | routeSegmentEqualsTo)"
+     ng-hide="('language.home' | routeSegmentEqualsTo) ||
+              ('language.home.place_id' | routeSegmentEqualsTo) ||
+              ('language.home.place_id.poi_id' | routeSegmentEqualsTo) ||
+              ('language.home.location' | routeSegmentStartsWith) ||
+              ('language.walks' | routeSegmentEqualsTo) ||
+              ('language.walks.place_id' | routeSegmentEqualsTo) ||
+              ('language.walks.place_id.poi_id' | routeSegmentEqualsTo) ||
+              ('language.walks.location' | routeSegmentStartsWith) ||
+              ('language.local_ecosystem' | routeSegmentStartsWith)"
+     ng-click="filterMenu.backToHome()">
+  <span class="fas fa-arrow-left" ng-show="!filterMenu.rootService.openFilter"></span>
+</div>
+
+<div class="filter-city-button"
+     ng-class="{ 'filter-city-button-active' : filterMenu.rootService.openFilter }"
+     ng-show="('language.home' | routeSegmentEqualsTo) ||
+              ('language.home.place_id' | routeSegmentEqualsTo) ||
+              ('language.home.place_id.poi_id' | routeSegmentEqualsTo) ||
+              ('language.home.location' | routeSegmentStartsWith) ||
+              ('language.walks' | routeSegmentEqualsTo) ||
+              ('language.walks.place_id' | routeSegmentEqualsTo) ||
+              ('language.walks.place_id.poi_id' | routeSegmentEqualsTo) ||
+              ('language.walks.location' | routeSegmentEqualsTo) ||
+              ('language.local_ecosystem' | routeSegmentStartsWith)"
+     ng-hide="('language.home.place_id.poi_id.video_id' | routeSegmentStartsWith) ||
+              ('language.walks.place_id.walks_id' | routeSegmentStartsWith) ||
+              ('language.local_ecosystem.type_id.subtype_id.local_id' | routeSegmentEqualsTo) ||
+              ('language.local_ecosystem.type_id.subtype_id.local_id.edit_local' | routeSegmentEqualsTo) ||
+              ('language.local_ecosystem.type_id.subtype_id.local_id.upload_video' | routeSegmentEqualsTo) ||
+              ('language.local_ecosystem.add_local' | routeSegmentEqualsTo)"
+     ng-click="filterMenu.filterToggle(); filterMenu.getCities()">
+  <span class="fas fa-search" ng-show="!filterMenu.rootService.openFilter"></span>
+  <span class="fas fa-times" ng-show="filterMenu.rootService.openFilter"></span>
+</div>
+
+
+<div class="filter-container {{adjustClass}}" ng-class="{ 'filter-container-active' : filterMenu.rootService.openFilter }">
+
+      <div class="users-target location-row" ng-show="city.show" ng-repeat="city in filterMenu.citiesList">
+        <div class="location-target-container-father">
+          <div class="location-target-container">
+            <div class="location-container">
+              <span class="fas fa-city" ng-show="!( 'language.local_ecosystem' | routeSegmentStartsWith )"></span>
+              <span class="fas fa-layer-group" ng-show="( 'language.local_ecosystem' | routeSegmentStartsWith )"></span>
+            </div>
+            <div class="location-management-info">
+              <p class="margin-location">
+                <span class="users-info-title" ng-show="!( 'language.local_ecosystem' | routeSegmentStartsWith )">
+                  {{filterMenu.rootService.languageText.location_city}}
+                </span>
+                <span class="users-info-title"  ng-show="( 'language.local_ecosystem' | routeSegmentStartsWith )">
+                  {{filterMenu.rootService.languageText.local_group}}
+                </span>
+                <span>{{city.name}}</span>
+              </p>
+              <p>
+                <span class="users-info-title" ng-show="!( 'language.local_ecosystem' | routeSegmentStartsWith )">
+                  POIs
+                </span>
+                <span class="users-info-title" ng-show="( 'language.local_ecosystem' | routeSegmentStartsWith )">
+                  {{filterMenu.rootService.languageText.local_types}}
+                </span>
+                <span>{{city.points_of_interest.length}}</span>
+              </p>
+            </div>
+
+            <div class="user-options">
+              <button class="user-button private-button"
+                      ng-show="!( 'language.local_ecosystem' | routeSegmentStartsWith )"
+                      ng-click="filterMenu.goToCity(city.id)">
+                <span class="fas fa-search"></span>
+              </button>
+
+              <button class="user-button private-button"
+                      ng-show="( 'language.local_ecosystem' | routeSegmentStartsWith )"
+                      ng-click="filterMenu.goToCity(city.name)">
+                <span class="fas fa-search"></span>
+              </button>
+
+              <button class="user-button edit-button"
+                      ng-show = "city.points_of_interest.length !== 0"
+                      ng-click="filterMenu.showPoi[$index] === !filterMenu.showPoi[$index]; filterMenu.getPoiByIndex($index, filterMenu.showPoi[$index]);">
+                <span ng-show="!filterMenu.showPoi[$index]" class="fas fa-chevron-down"></span>
+                <span ng-show="filterMenu.showPoi[$index]" class="fas fa-chevron-up"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="poi-container" ng-show="filterMenu.showPoi[$index]">
+            <div class="users-target poi-target" ng-show="poi.show" ng-repeat="poi in filterMenu.pois">
+              <div class="users-target-container">
+                <div class="users-container"><span class="fas fa-map-marker-alt"></span></div>
+                  <div class="users-info">
+                    <p class="margin-poi" ng-class="{ 'filter-poi-center' : ( 'language.local_ecosystem' | routeSegmentStartsWith ) }">
+                      <span class="users-info-title" ng-show="!( 'language.local_ecosystem' | routeSegmentStartsWith )">
+                        {{filterMenu.rootService.languageText.signup_name}}
+                      </span>
+                      <span class="users-info-title" ng-show="( 'language.local_ecosystem' | routeSegmentStartsWith )">
+                        {{filterMenu.rootService.languageText.local_type}}
+                      </span>
+                      <span>{{poi.name}}</span>
+                    </p>
+                    <p ng-show="!( 'language.local_ecosystem' | routeSegmentStartsWith )">
+                      <span class="users-info-title">{{filterMenu.rootService.languageText.add_walk_latitude}}</span>
+                      <span>{{poi.latitude}}</span>
+                    </p>
+                    <p ng-show="!( 'language.local_ecosystem' | routeSegmentStartsWith )">
+                      <span class="users-info-title">{{filterMenu.rootService.languageText.add_walk_longitude}}</span>
+                      <span>{{poi.longitude}}</span>
+                    </p>
+                  </div>
+                </div>
+              <div class="user-options">
+
+                <button class="user-button private-button"
+                        ng-show="!( 'language.local_ecosystem' | routeSegmentStartsWith )"
+                        ng-click="filterMenu.goToPOI(poi.id, city.id)">
+                  <span class="fas fa-search"></span>
+                </button>
+
+                <button class="user-button private-button"
+                        ng-show="( 'language.local_ecosystem' | routeSegmentStartsWith )"
+                        ng-click="filterMenu.goToPOI(poi.name, city.name)">
+                  <span class="fas fa-search"></span>
+                </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <div class="users-target location-row" ng-show="( 'language.local_ecosystem' | routeSegmentStartsWith )">
+    <div class="location-target-container-father">
+      <div class="location-target-container">
+        <div class="location-container">
+          <span class="fas fa-layer-group"></span>
+        </div>
+        <div class="location-management-info local-ecosystem-filter-one-option">
+          <p class="margin-location">
+            <span class="users-info-title">
+                  {{filterMenu.rootService.languageText.local_group}}
+                </span>
+            <span>All</span>
+          </p>
+        </div>
+
+        <div class="user-options">
+          <button class="user-button private-button"
+                  ng-click="filterMenu.goToAllLocals()">
+            <span class="fas fa-search"></span>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

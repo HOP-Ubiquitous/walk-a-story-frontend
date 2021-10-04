@@ -1,0 +1,118 @@
+<main-menu></main-menu>
+
+<div class="home-background">
+
+  <header class="home-header">
+    <h1>{{localEcosystemLocation.rootService.languageText.local_title}}</h1>
+  </header>
+
+  <filter-menu></filter-menu>
+
+  <div class="gallery-container" ng-class="{ 'gallery-container-without-padding': ('language.local_ecosystem.type_id.subtype_id.local_id.upload_video' | routeSegmentEqualsTo) }">
+
+    <div ng-hide="('language.local_ecosystem.type_id.subtype_id.local_id' | routeSegmentStartsWith) ||
+                  ('language.local_ecosystem.add_local' | routeSegmentStartsWith)">
+
+      <leaflet id="local-ecosystem-map"
+               class="location-map map-local-ecosystem"
+               defaults="defaults"
+               lf-center="center"
+               event-broadcast="events"
+               markers="markers">
+      </leaflet>
+
+      <div class="my-local-button"
+           ng-show="localEcosystemLocation.userServiceData.users.admin === true || localEcosystemLocation.localEcosystemServiceData.localListByUserId.length > 0"
+           ng-class="{ 'local-add-button-down': localEcosystemLocation.dataMarker === undefined }"
+           ng-click="localEcosystemLocation.goToMyLocal()">
+        <span class="fas fa-store-alt"></span>
+      </div>
+
+      <div class="local-add-button"
+           ng-class="{ 'local-add-button-down': localEcosystemLocation.dataMarker === undefined }"
+           ng-click="localEcosystemLocation.goToAddLocal()">
+        <span class="fas fa-plus"></span>
+      </div>
+
+      <div class="location-info location-info-0 local-info"
+           ng-class="{ 'location-down': localEcosystemLocation.dataMarker === undefined }">
+        <div class="location-info-inner">
+          <h5>{{localEcosystemLocation.dataMarker.title}}
+            <span class="location-info-close" ng-show="localEcosystemLocation.dataMarker.isActive === false">
+            {{localEcosystemLocation.rootService.languageText.local_closed}}
+          </span>
+          </h5>
+          <hr>
+          <p>{{localEcosystemLocation.dataMarker.description | limitTo: 140}}<span ng-show="localEcosystemLocation.dataMarker.description.length >= 60">...</span></p>
+          <p class="yellow-link">{{localEcosystemLocation.dataMarker.creation_date | limitTo: 16}}</p>
+        </div>
+        <div class="read-more-button"
+             ng-click="localEcosystemLocation.goToLocal(localEcosystemLocation.dataMarker.type, localEcosystemLocation.dataMarker.subtype, localEcosystemLocation.dataMarker.id)">
+          <span>{{localEcosystemLocation.rootService.languageText.local_read_more}}</span>
+        </div>
+      </div>
+
+      <div class="popup-bg local-ecosystem-popup-bg"
+           ng-if="localEcosystemLocation.localEcosystemService.localsByOwnerIdLoaded == true">
+        <div class="popup local-ecosystem-popup">
+
+          <div class="button-menu my-local-close-button"
+               ng-click="localEcosystemLocation.localEcosystemService.localsByOwnerIdLoaded = false"
+               ng-class="{ 'button-menu-active' : mainMenu.rootService.openMenu }">
+            <span class="fas fa-times"></span>
+          </div>
+
+          <h1>{{localEcosystemLocation.rootService.languageText.local_my_posts}}</h1>
+
+          <div class="my-locals-container">
+
+            <div class="my-local-container"
+                 ng-click="localEcosystemLocation.goToOwnerLocal(local)"
+                 ng-repeat="local in localEcosystemLocation.localEcosystemServiceData.localsByOwnerId">
+              <div class="my-local-left">
+
+              </div>
+              <div class="my-local-right">
+                <h5>{{local.title}}</h5>
+                <span>{{local.type}} - {{local.subtype}}</span>
+              </div>
+            </div>
+
+            <div class="my-local-empty"
+                 ng-show="localEcosystemLocation.localEcosystemServiceData.localsByOwnerId.length === 0 || localEcosystemLocation.localEcosystemServiceData.localsByOwnerId === undefined">
+
+              <div class="popup-upload-icon upload-error-icon my-local-empty-icon">
+                <span class="fas fa-times"></span>
+              </div>
+
+              <p>
+                {{localEcosystemLocation.rootService.languageText.local_without_post_1}}
+                <br>
+                {{localEcosystemLocation.rootService.languageText.local_without_post_2}}
+              </p>
+
+            </div>
+
+          </div>
+
+          <p>{{walks.successMessage}}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div app-view-segment="2"></div>
+
+    <div app-view-segment="4"
+         ng-hide="('language.local_ecosystem.type_id.subtype_id.local_id.edit_local' | routeSegmentEqualsTo) ||
+                  ('language.local_ecosystem.type_id.subtype_id.local_id.upload_video' | routeSegmentEqualsTo)">
+    </div>
+
+    <div app-view-segment="5"
+         ng-show="('language.local_ecosystem.type_id.subtype_id.local_id.edit_local' | routeSegmentEqualsTo) ||
+                  ('language.local_ecosystem.type_id.subtype_id.local_id.upload_video' | routeSegmentEqualsTo)">
+    </div>
+
+  </div>
+
+</div>

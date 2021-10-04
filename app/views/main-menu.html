@@ -1,0 +1,82 @@
+<div class="button-menu"
+     ng-hide="('language.login' | routeSegmentStartsWith) ||
+                ('language.new_user' | routeSegmentStartsWith) ||
+                ('language.terms' | routeSegmentStartsWith) ||
+                ('language.survey' | routeSegmentStartsWith)"
+     ng-click="mainMenu.rootService.openMenu = !mainMenu.rootService.openMenu;
+                 mainMenu.rootService.openFilter = false"
+     ng-class="{ 'button-menu-active' : mainMenu.rootService.openMenu}">
+  <span class="fas fa-bars" ng-show="!mainMenu.rootService.openMenu"></span>
+  <span class="fas fa-times" ng-show="mainMenu.rootService.openMenu"></span>
+</div>
+
+<div class="button-menu button-absolute"
+     ng-show="('upload' | routeSegmentStartsWith)"
+     ng-click="mainMenu.rootService.openMenu = !mainMenu.rootService.openMenu;
+                 mainMenu.rootService.openFilter = false"
+     ng-class="{ 'button-menu-active' : mainMenu.rootService.openMenu }">
+  <span class="fas fa-bars" ng-show="!mainMenu.rootService.openMenu"></span>
+  <span class="fas fa-times" ng-show="mainMenu.rootService.openMenu"></span>
+</div>
+
+<div class="menu-container {{adjustClass}}"
+     ng-hide="('login' | routeSegmentStartsWith) || ('new_user' | routeSegmentStartsWith)"
+     ng-class="{ 'menu-container-active' : mainMenu.rootService.openMenu}">
+
+  <div class="menu-option"
+       ng-class="{ 'menu-option-active' : ('home' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToHome(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.navbar_home}}</span>
+  </div>
+
+  <div class="menu-option"
+       ng-class="{ 'menu-option-active' : ('profile' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToProfile(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.navbar_profile}}</span>
+  </div>
+
+  <div class="menu-option"
+       ng-class="{ 'menu-option-active' : ('upload' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToUpload(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.navbar_upload_video}}</span>
+  </div>
+
+  <div class="menu-option"
+       ng-class="{ 'menu-option-active' : ('walks' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToWalks(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.navbar_walks}}</span>
+  </div>
+
+  <div class="menu-option"
+       ng-class="{ 'menu-option-active' : ('local_ecosystem' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToLocalEcosystem(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.local_title}}</span>
+  </div>
+
+  <div class="menu-option"
+       ng-show="mainMenu.userServiceData.users.admin === true"
+       ng-class="{ 'menu-option-active' : ('location_management' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToLocationManagement(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.navbar_location_management}}</span>
+  </div>
+
+  <div class="menu-option"
+       ng-class="{ 'menu-option-active' : ('tutorials' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToTutorials(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.navbar_tutorials}}</span>
+  </div>
+
+  <div class="menu-option"
+       ng-show="mainMenu.userServiceData.users.admin === true"
+       ng-class="{ 'menu-option-active' : ('users' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToUsers(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.navbar_users}}</span>
+  </div>
+
+  <div class="menu-option"
+       ng-class="{ 'menu-option-active' : ('login' | routeSegmentStartsWith) }"
+       ng-click="mainMenu.goToLogin(); mainMenu.rootService.openMenu = false">
+    <span>{{mainMenu.languageText.navbar_logout}}</span>
+  </div>
+
+</div>

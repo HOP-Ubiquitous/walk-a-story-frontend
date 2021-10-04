@@ -1,0 +1,32 @@
+<main-menu></main-menu>
+
+<div class="place-header" ng-class="{'place-header-40' : videoLocation.getHeaderTitle() !== ''}">
+  <h2>{{videoLocation.getHeaderTitle() || 'Unknown'}}</h2>
+</div>
+
+<div class="back-button" ng-class="{'top-40' : videoLocation.getHeaderTitle() !== ''}" ng-click="videoLocation.goToVideos()">
+  <span class="fas fa-arrow-left"></span>
+</div>
+
+<leaflet id="video-map"
+         class="location-map"
+         ng-class="{ 'map-video-xxl': videoLocation.dataMarker === undefined && videoLocation.getHeaderTitle() === '',
+                     'map-video-xl': videoLocation.dataMarker === undefined && videoLocation.getHeaderTitle() !== '',
+                     'map-video-sm': videoLocation.dataMarker !== undefined && videoLocation.getHeaderTitle() !== '',
+                     'map-video-only-point-selected': videoLocation.dataMarker !== undefined && videoLocation.getHeaderTitle() === ''}"
+         defaults="defaults"
+         lf-center="center"
+         event-broadcast="events"
+         markers="markers"
+         maxbounds="maxbounds">
+</leaflet>
+
+<div class="location-info location-info-0"
+     ng-class="{ 'location-down': videoLocation.dataMarker === undefined }">
+  <div class="location-info-inner">
+    <h5>{{videoLocation.dataMarker.title || 'Untitle'}}</h5>
+    <hr>
+    <p>{{videoLocation.dataMarker.address || 'Without Description'}}</p>
+    <p class="yellow-link">{{videoLocation.dataMarker.creation_date | limitTo: 16}}</p>
+  </div>
+</div>

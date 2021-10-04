@@ -1,0 +1,47 @@
+<div class="background-login">
+
+  <div class="background-login-upper">
+  </div>
+
+  <form class="login-form">
+
+    <div class="button-menu button-menu-active"
+         ng-click="newUser.goToLogin()">
+      <span class="fas fa-times"></span>
+    </div>
+
+    <header class="login-header">
+      <h1>{{newUser.rootService.languageText.signup_title}}</h1>
+    </header>
+
+    <div class="login-icon">
+      <span class="fas fa-user"></span>
+    </div>
+
+    <input type="text" placeholder="{{newUser.rootService.languageText.signup_name}}" ng-model="newUser.user.name">
+
+    <input type="text" placeholder="{{newUser.rootService.languageText.signup_username}}" ng-model="newUser.user.alias">
+
+    <input type="date" placeholder="Birth date" ng-model="newUser.user.birthDate">
+
+    <input type="email" placeholder="{{newUser.rootService.languageText.signup_email}}" ng-model="newUser.user.mail">
+
+    <input type="password" placeholder="{{newUser.rootService.languageText.signup_password}}" ng-model="newUser.user.password">
+
+    <input class="login-button" type="submit" value="{{newUser.rootService.languageText.signup_button}}" ng-click="newUser.createUser()">
+
+  </form>
+
+  <div class="popup-bg upload-bg"
+       ng-if="newUser.userService.openMessageWindow == true">
+    <div class="popup upload-popup">
+
+      <div class="popup-upload-icon upload-error-icon">
+        <span class="fas fa-times"></span>
+      </div>
+
+      <p>{{newUser.userService.errorMessage}}</p>
+    </div>
+  </div>
+
+</div>

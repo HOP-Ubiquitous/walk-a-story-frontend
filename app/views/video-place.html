@@ -1,0 +1,363 @@
+<div class="place-header" ng-class="{'place-header-40' : videoPlace.headerTitle !== ''}">
+  <h2>{{videoPlace.headerTitle}}</h2>
+</div>
+
+<div class="empty-container"
+     ng-show="videoPlace.videoServiceData.videoListByPlace.videos.length === 0">
+
+  <div class="empty-icon">
+    <span class="fas fa-video-slash"></span>
+  </div>
+
+  <p>{{videoPlace.rootService.languageText.profile_no_videos}}
+    <br>
+    {{videoPlace.rootService.languageText.profile_no_videos2}}
+    <a ng-click="videoPlace.goToUpload()">{{videoPlace.rootService.languageText.profile_upload_title}}</a>
+  </p>
+
+</div>
+
+<div class="video-target" ng-repeat="video in videoPlace.videosFiltered | orderBy: '-creation_date'">
+
+  <div class="video-user-container">
+    <div class="user-photo-container">
+      <span class="fas fa-user"></span>
+    </div>
+    <div class="user-name-container">
+      <span>{{video.username || 'Username'}}</span>
+    </div>
+
+    <div class="video-status-container status-private"
+         ng-class="{ 'status-invisible' : videoPlace.userServiceData.users.admin === false }"
+         ng-show="video.file_public === false && video.file_status !== 6">
+
+      <div class="video-status-icon-container status-private">
+        <span class="fas fa-lock video-status-icon"></span>
+        <span class="status">{{videoPlace.rootService.languageText.post_stat_private}}</span>
+      </div>
+    </div>
+
+    <div class="video-status-container status-public"
+         ng-class="{ 'status-invisible' : videoPlace.userServiceData.users.admin === false }"
+         ng-show="video.file_public === true && video.file_status !== 6">
+
+      <div class="video-status-icon-container status-public">
+        <span class="fas fa-lock-open video-status-icon"></span>
+        <span class="status">{{videoPlace.rootService.languageText.post_stat_published}}</span>
+      </div>
+    </div>
+
+    <div class="video-status-container status-deleted"
+         ng-class="{ 'status-invisible' : videoPlace.userServiceData.users.admin === false }"
+         ng-show="video.file_status === 6">
+
+      <div class="video-status-icon-container status-deleted">
+        <span class="fas fa-trash-alt video-status-icon"></span>
+        <span class="status">{{videoPlace.rootService.languageText.post_stat_deleted}}</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="rating-container">
+    <div class="star-container" ng-repeat="rating in videoPlace.ratingArray[video.id]">
+      <span class="{{rating.star}}"></span>
+    </div>
+  </div>
+
+  <img class="video-image" src="../images/upload-background.jpg" ng-show="video.public_url === ''">
+  <video controls poster="../images/upload-background.jpg">
+    <source src="{{video.public_url}}#t=0.1">
+  </video>
+  <img class="video-image-background" src="../images/upload-background.jpg">
+
+  <div class="title-container" ng-click="videoPlace.goToSingleVideo(video.id)">
+    <h5>{{video.title || 'Untitle'}}</h5>
+    <span>100 views | {{video.creation_date | limitTo: 10}}</span>
+  </div>
+
+  <div class="social-container">
+
+    <div class="button-social" ng-click="videoPlace.voteVideo(video.id, 1)" ng-class="{ 'button-social-active' : like }">
+      <span class="fas fa-thumbs-up green-color"></span>
+      <br>
+      <span class="green-color">{{video.positive_votes}}</span>
+    </div>
+
+    <div class="button-social" ng-click="videoPlace.voteVideo(video.id, -1)" ng-class="{ 'button-social-active' : dislike }">
+      <span class="fas fa-thumbs-down red-color"></span>
+      <br>
+      <span class="red-color">{{video.negative_votes}}</span>
+    </div>
+
+    <div class="button-social"
+         ng-click="socialPopup = true"
+         ng-class="{ 'button-social-active' : share }"
+         ng-show="video.file_public === true">
+      <span class="fas fa-share"></span>
+      <br>
+      <span>{{videoPlace.rootService.languageText.post_share}}</span>
+    </div>
+  </div>
+
+  <div class="description-container">
+    <span>{{video.description || 'Without Description'}}</span>
+    <span class="description-link" ng-click="videoPlace.goToSingleVideo(video.place_id, video.id)">More Information</span>
+  </div>
+
+  <div class="comments-container">
+
+        <textarea ng-model="videoPlace.comment[video.id]" placeholder="Comment the video!">
+        </textarea>
+
+    <div class="send-comment-button" ng-show="videoPlace.comment[video.id].length > 0" ng-click="videoPlace.addComment(video.id)">
+      <span class="fas fa-paper-plane"></span>
+    </div>
+
+    <div class="show-more-comment-button"
+         ng-show="videoPlace.comment[video.id].length === 0 || videoPlace.comment[video.id] === undefined"
+         ng-click="videoPlace.getComments(video.id); videoPlace.toggleComments(video.id)"
+         ng-class="{ 'show-more-comment-button-active' : videoPlace.openComments[video.id] }">
+      <span class="fas fa-chevron-down"></span>
+    </div>
+
+  </div>
+
+  <div class="gps-walk-button margin-0" ng-click="videoPlace.goToLocationVideo(video.place_id, video.id)">
+    <span class="fas fa-map-marker-alt"></span>
+  </div>
+
+  <div class="all-comments-container" ng-class="{ 'all-comments-container-active' : videoPlace.openComments[video.id] }">
+
+    <div class="comment" ng-repeat="comment in videoPlace.comments">
+
+      <div class="comment-data">
+        <div class="comment-data-left">
+          <p>{{comment.username}}</p>
+        </div>
+        <div class="comment-data-right">
+          <p>{{comment.date | date : 'yyyy-MM-dd HH:mm'}}</p>
+        </div>
+      </div>
+
+      <div class="comment-text">
+        <span>{{comment.text}}</span>
+      </div>
+
+      <div class="comment-buttons-container">
+
+        <div class="comment-buttons-container-right">
+
+          <div class="comment-flag" ng-click="videoPlace.flagComment(video.id, comment.comment_id)">
+            <div class="report-number" ng-show="videoPlace.userServiceData.users.admin === true">
+                  <span>
+                    {{comment.report}}
+                  </span>
+            </div>
+            <span class="fas fa-exclamation-circle"></span>
+          </div>
+
+          <div class="comment-delete"
+               ng-show="videoPlace.userServiceData.users.admin === true"
+               ng-click="videoPlace.openDeleteComment(video.id, comment.comment_id)">
+            <span class="fas fa-trash-alt"></span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="admin-options" ng-show="videoPlace.userServiceData.users.admin === true">
+
+    <button class="admin-button undelete-button"
+            ng-show="video.file_status === 6"
+            ng-click="undeletePopup = true">
+      <span class="fas fa-undo-alt"></span>{{videoPlace.rootService.languageText.post_undelete}}
+    </button>
+
+    <button class="admin-button delete-button"
+            ng-show="video.file_status !== 6"
+            ng-click="deletePopup = true">
+      <span class="fas fa-trash-alt"></span>{{videoPlace.rootService.languageText.post_delete}}
+    </button>
+
+    <button class="admin-button private-button"
+            ng-show="video.file_public === true"
+            ng-click="privatePopup = true">
+      <span class="fas fa-lock"></span>{{videoPlace.rootService.languageText.post_button_private}}
+    </button>
+
+    <button class="admin-button"
+            ng-show="video.file_public === false"
+            ng-click="publishPopup = true">
+      <span class="fas fa-lock-open"></span>{{videoPlace.rootService.languageText.post_button_publish}}
+    </button>
+
+  </div>
+
+  <div class="popup-bg" ng-show="socialPopup">
+    <div class="popup social-popup">
+
+      <div class="button-menu social-close"
+           ng-click="socialPopup = false">
+        <span class="fas fa-times"></span>
+      </div>
+
+      <div class="popup-social-icon">
+        <span class="fas fa-share"></span>
+      </div>
+      <h1 class="popup-social-title">{{videoPlace.rootService.languageText.post_share}} {{video.title || 'Untitle'}}</h1>
+
+      <a socialshare
+         socialshare-provider="facebook"
+         socialshare-via="424890874779971"
+         socialshare-type="feed"
+         socialshare-media="{{video.public_url}}"
+         socialshare-description="Watch the video '{{video.title}}' by {{video.username}} from {{video.place_id}} in https://br.hopu.eu/#/{{video.place_id}}/{{video.id}}. See more videos in Walk a Story. https://br.hopu.eu/"
+         socialshare-url="https://br.hopu.eu/">
+        <span class="fab fa-facebook-square"></span>
+        <span>Facebook</span>
+      </a>
+
+      <a socialshare
+         socialshare-provider="twitter"
+         socialshare-text="Watch the video '{{video.title}}' by {{video.username}} from {{video.place_id}} in https://br.hopu.eu/#/{{video.place_id}}/{{video.id}}. See more videos in Walk a Story."
+         socialshare-hashtags="cocrew, {{video.place_id}}"
+         socialshare-url="https://br.hopu.eu/">
+        <span class="fab fa-twitter-square"></span>
+        <span>Twitter</span>
+      </a>
+
+      <a socialshare
+         socialshare-provider="whatsapp"
+         socialshare-text="Watch the video '{{video.title}}' by {{video.username}} from {{video.place_id}} in https://br.hopu.eu/#/{{video.place_id}}/{{video.id}}. See more videos in Walk a Story."
+         socialshare-url="https://br.hopu.eu/">
+        <span class="fab fa-whatsapp-square"></span>
+        <span>Whatsapp</span>
+      </a>
+
+      <a socialshare
+         socialshare-provider="telegram"
+         socialshare-text="Watch the video '{{video.title}}' by {{video.username}} from {{video.place_id}} in https://br.hopu.eu/#/{{video.place_id}}/{{video.id}}. See more videos in Walk a Story."
+         socialshare-url="https://br.hopu.eu/">
+        <span class="fab fa-telegram"></span>
+        <span>Telegram</span>
+      </a>
+
+      <a socialshare
+         socialshare-provider="facebook-messenger"
+         socialshare-url="https://br.hopu.eu/">
+        <span class="fab fa-facebook-messenger"></span>
+        <span>Facebook Messenger</span>
+      </a>
+
+    </div>
+  </div>
+
+  <pop-up show="undeletePopup"
+          icon-circle="undelete-icon"
+          icon="fas fa-undo-alt"
+          title="video.title"
+          question="{{videoPlace.rootService.languageText.post_confirm_recover_text}}"
+          show-buttons="videoPlace.userServiceData.users.admin === true"
+          cancel-button="true"
+          delete-button="false"
+          un-delete-button="true"
+          un-delete-function="videoPlace.undeleteVideo(video)"
+          private-button="false"
+          publish-button="false"
+          update-rol-button="false"
+          downgrade-rol-button="false">
+  </pop-up>
+
+  <pop-up show="deletePopup"
+          icon-circle="delete-icon"
+          icon="fas fa-trash-alt"
+          title="video.title"
+          question="{{videoPlace.rootService.languageText.post_confirm_delete_text}}"
+          show-buttons="videoPlace.userServiceData.users.admin === true"
+          cancel-button="true"
+          delete-button="true"
+          delete-function="videoPlace.deleteVideo(video.id)"
+          un-delete-button="false"
+          private-button="false"
+          publish-button="false"
+          update-rol-button="false"
+          downgrade-rol-button="false">
+  </pop-up>
+
+  <pop-up show="privatePopup"
+          icon-circle="private-icon"
+          icon="fas fa-lock"
+          title="video.title"
+          question="{{videoPlace.rootService.languageText.post_confirm_private_text}}"
+          show-buttons="videoPlace.userServiceData.users.admin === true"
+          cancel-button="true"
+          delete-button="false"
+          un-delete-button="false"
+          private-button="true"
+          private-function="videoPlace.privateVideo(video)"
+          publish-button="false"
+          update-rol-button="false"
+          downgrade-rol-button="false">
+  </pop-up>
+
+  <pop-up show="publishPopup"
+          icon-circle="publish-icon"
+          icon="fas fa-lock-open"
+          title="video.title"
+          question="{{videoPlace.rootService.languageText.post_confirm_publish_text}}"
+          show-buttons="videoPlace.userServiceData.users.admin === true"
+          cancel-button="true"
+          delete-button="false"
+          un-delete-button="false"
+          private-button="false"
+          publish-button="true"
+          publish-function="videoPlace.publishVideo(video)"
+          update-rol-button="false"
+          downgrade-rol-button="false">
+  </pop-up>
+
+  <div class="popup-bg" ng-show="videoPlace.openFlagPopup[video.id]">
+    <div class="popup">
+
+      <div class="popup-inner">
+        <div class="popup-status-icon flag-icon">
+          <span class="fas fa-exclamation-circle"></span>
+        </div>
+        <h1 class="popup-video-title">{{video.title || 'Untitle'}}</h1>
+        <p>Do you want to report this comment?</p>
+        <p class="left"><span class="bold-yellow">{{videoPlace.flagCommentSelected.user}}:</span> {{videoPlace.flagCommentSelected.text}}</p>
+      </div>
+
+      <div class="admin-options popup-options">
+        <button class="admin-button" ng-click="videoPlace.openFlagPopup[video.id] = false">Cancel</button>
+        <button class="admin-button delete-button" ng-click="videoPlace.addReportToComment(videoPlace.flagCommentSelected.id); videoPlace.openFlagPopup[video.id] = false"><span class="fas fa-exclamation-circle"></span>Report</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup-bg" ng-show="videoPlace.openDeleteCommentPopup[video.id]">
+    <div class="popup">
+
+      <div class="popup-inner">
+        <div class="popup-status-icon delete-icon">
+          <span class="fas fa-trash-alt"></span>
+        </div>
+        <h1 class="popup-video-title">{{video.title || 'Untitle'}}</h1>
+        <p>Do you want to delete this comment?</p>
+        <p class="left"><span class="bold-yellow">{{videoPlace.deleteCommentSelected.user}}:</span> {{videoPlace.deleteCommentSelected.text}}</p>
+      </div>
+
+      <div class="admin-options popup-options">
+        <button class="admin-button" ng-click="videoPlace.openDeleteCommentPopup[video.id] = false">Cancel</button>
+        <button class="admin-button delete-button" ng-click="videoPlace.deleteComment(videoPlace.deleteCommentSelected.id); videoPlace.openDeleteCommentPopup[video.id] = false"><span class="fas fa-trash-alt"></span>Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div>

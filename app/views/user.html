@@ -1,0 +1,168 @@
+<div class="home-background">
+
+  <header class="home-header">
+    <h1>POIS</h1>
+  </header>
+
+  <div class="gallery-container">
+    <div class="user-target"
+      ng-repeat="city in user.getCitiesList()">
+      <div class="user-target-container-cities">
+        <div class="user-info">
+          <p><span class="users-info-title">{{city.name}}</span></p>
+        </div>
+
+        <div class="user-container"><span class="fas fa-city"></span></div>
+
+      </div>
+
+      <div class="user-options">
+        <button class="users-button"
+                ng-click="interestPoi = true"
+             ng-show="infopoi">
+          <span class="fas fa-plus"></span>
+        </button>
+        <button class="user-button private-button"
+                ng-click="updatePopup = true">
+          <span class="far fa-edit"></span>
+        </button>
+
+        <button class="users-button delete-button"
+                ng-show = "{{city.points_of_interest.length === 0}}"
+                ng-click="deletePopup = true">
+          <span class="fas fa-trash-alt"></span>
+        </button>
+
+        <button class="user-button edit-button"
+                ng-click="infopoi = !infopoi">
+          <span class="fas fa-list"></span>
+        </button>
+
+        <br>
+
+        <div class="popup-bg" ng-show="interestPoi">
+          <div class="popup">
+            <div class="popup-status-icon delete-icon">
+              <span class="fas fa-search-location"></span>
+            </div>
+            <h1 class="popup-video-title">{{city.name}}</h1>
+            <div class="form-gallery-container">
+
+              <form name="add-walk" class="add-walk-form">
+
+                <input type="text" placeholder="Nombre del POI" ng-model="user.poi.name">
+                <input type="number" placeholder="Latitud" ng-model="user.poi.latitude">
+                <input type="number" placeholder="Longitud" ng-model="user.poi.longitude">
+              </form>
+            </div>
+
+            <div class="admin-options popup-options">
+              <button class="admin-button" ng-click="interestPoi = false">Boton cancelar</button>
+              <button class="admin-button delete-button" ng-click="user.addPoi(city.id);
+              interestPoi = false"><span class="fas fa-trash-alt"></span>Boton Añadir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup-bg" ng-show="deletePopup">
+          <div class="popup">
+            <div class="popup-status-icon delete-icon">
+              <span class="fas fa-trash-alt"></span>
+            </div>
+            <h1 class="popup-video-title">{{city.name}}</h1>
+            <p>Aviso de que quiero eliminar la ciudad</p>
+            <div class="admin-options popup-options">
+              <button class="admin-button" ng-click="deletePopup = false">Boton cancelar</button>
+              <button class="admin-button delete-button" ng-click="user.deleteCity(city.id);deletePopup = false"><span class="fas fa-trash-alt"></span>Boton eliminar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup-bg" ng-show="updatePopup">
+          <div class="popup">
+            <div class="popup-status-icon private-icon">
+              <span class="far fa-edit"></span>
+            </div>
+            <h1 class="popup-video-title">{{city.name}}</h1>
+            <div class="form-gallery-container">
+
+              <form name="update-place" class="add-walk-form">
+
+                <input type="text" placeholder="CIUDAD" ng-model="user.place.name">
+              </form>
+            </div>
+
+            <div class="admin-options popup-options">
+              <button class="admin-button" ng-click="updatePopup = false">Boton cancelar</button>
+              <button class="admin-button delete-button" ng-click="user.updateCity(city.id);deletePopup = false"><span class="fas fa-trash-alt"></span>Boton Actualizar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-info2"ng-show="infopoi">
+        <div ng-repeat="poi in city.points_of_interest">
+          <p><span class="users-info-title">{{poi.name}}</span></p>
+
+          <button class="user-button private-button"
+                  ng-click="updatePoipopup = true">
+            <span class="far fa-edit"></span>
+          </button>
+
+          <button class="users-button delete-button"
+                  ng-click="deletePoipopup = true">
+            <span class="fas fa-trash-alt"></span>
+          </button>
+
+          <div class="popup-bg" ng-show="updatePoipopup">
+            <div class="popup">
+              <div class="popup-status-icon private-icon">
+                <span class="far fa-edit"></span>
+              </div>
+              <h1 class="popup-video-title">{{poi.name}}</h1>
+              <div class="form-gallery-container">
+
+                <form name="update-poi" class="add-walk-form">
+
+                  <input type="text" placeholder="POI" ng-model="user.poi.name">
+                  <input type="number" placeholder="LATITUDE" ng-model="user.poi.latitude">
+                  <input type="number" placeholder="LONGITUDE" ng-model="user.poi.longitude">
+                </form>
+              </div>
+
+              <div class="admin-options popup-options">
+                <button class="admin-button" ng-click="updatePoipopup = false">Boton cancelar</button>
+                <button class="admin-button delete-button" ng-click="user.updatePoi(city.id, poi.id);updatePoipopup = false"><span class="fas fa-trash-alt"></span>Boton Actualizar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="popup-bg" ng-show="deletePoipopup">
+            <div class="popup">
+              <div class="popup-status-icon delete-icon">
+                <span class="fas fa-trash-alt"></span>
+              </div>
+              <h1 class="popup-video-title">{{poi.name}}</h1>
+              <p>Aviso de que quiero eliminar POI</p>
+              <div class="admin-options popup-options">
+                <button class="admin-button" ng-click="deletePoipopup = false">Boton cancelar</button>
+                <button class="admin-button delete-button" ng-click="user.deletePoi(poi.id);deletePoipopup = false"><span class="fas fa-trash-alt"></span>Boton eliminar</button>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="add-walk-container">
+    <div class="add-walk-button" ng-click="user.goToAddPlace()">
+      <span class="fas fa-plus"></span>
+      <span class="add-walk-text-button">Add city</span>
+    </div>
+  </div>
+</div>

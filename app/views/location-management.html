@@ -1,0 +1,155 @@
+<main-menu></main-menu>
+
+<div class="filter-city-button"
+     ng-show="!('language.location_management' | routeSegmentEqualsTo)"
+     ng-click="locationManagement.backToLocation()">
+  <span class="fas fa-arrow-left"></span>
+</div>
+
+<div class="home-background">
+
+  <header class="home-header">
+    <h1>{{locationManagement.rootService.languageText.location_title}}</h1>
+  </header>
+
+  <div class="gallery-container"
+       ng-class="{ 'padding-90-location' : ('language.location_management' | routeSegmentEqualsTo) , 'padding-90-location-bottom-0' : ('language.location_management.add_place' | routeSegmentStartsWith)}">
+
+    <div  ng-hide="('language.location_management.add_place' | routeSegmentStartsWith) || ('language.location_management.place_id' | routeSegmentStartsWith)">
+
+      <div class="users-target location-row" ng-repeat="city in locationManagement.citiesList">
+        <div class="location-target-container-father">
+          <div class="location-target-container">
+            <div class="location-container"><span class="fas fa-city"></span></div>
+            <div class="location-management-info">
+              <p class="margin-location">
+                <span class="users-info-title">{{locationManagement.rootService.languageText.location_city}}</span>
+                <span>{{city.name}}</span>
+              </p>
+              <p>
+                <span class="users-info-title">POIs</span>
+                <span>{{city.points_of_interest.length}}</span>
+              </p>
+            </div>
+
+            <div class="user-options">
+              <button class="user-button private-button"
+                      ng-click="locationManagement.editPlace(city.id)">
+                <span class="far fa-edit"></span>
+              </button>
+
+              <button class="users-button delete-button"
+                      ng-show = "city.points_of_interest.length === 0"
+                      ng-click="deletePopup = true">
+                <span class="fas fa-trash-alt"></span>
+              </button>
+
+              <button class="user-button edit-button"
+                      ng-show = "city.points_of_interest.length !== 0"
+                      ng-click="locationManagement.showPoi[$index] === !locationManagement.showPoi[$index]; locationManagement.getPoiByIndex($index, locationManagement.showPoi[$index]);">
+                <span ng-show="!locationManagement.showPoi[$index]" class="fas fa-chevron-down"></span>
+                <span ng-show="locationManagement.showPoi[$index]" class="fas fa-chevron-up"></span>
+              </button>
+
+              <pop-up show="deletePopup"
+                      icon-circle="delete-icon"
+                      icon="fas fa-trash-alt"
+                      title="city.name"
+                      question="{{locationManagement.rootService.languageText.location_delete_city}}"
+                      show-buttons="locationManagement.userServiceData.users.admin === true"
+                      cancel-button="true"
+                      delete-button="true"
+                      delete-function="locationManagement.deleteCity(city.id)"
+                      un-delete-button="false"
+                      private-button="false"
+                      publish-button="false"
+                      update-rol-button="false"
+                      downgrade-rol-button="false">
+              </pop-up>
+
+            </div>
+          </div>
+
+          <div class="poi-container" ng-show="locationManagement.showPoi[$index]">
+            <div class="users-target poi-target" ng-repeat="poi in locationManagement.pois">
+              <div class="users-target-container">
+                <div class="users-container"><span class="fas fa-map-marker-alt"></span></div>
+                <div class="users-info">
+                  <p class="margin-poi">
+                    <span class="users-info-title">{{locationManagement.rootService.languageText.signup_name}}</span>
+                    <span>{{poi.name}}</span>
+                  </p>
+                  <p>
+                    <span class="users-info-title">{{locationManagement.rootService.languageText.add_walk_latitude}}</span>
+                    <span>{{poi.latitude}}</span>
+                  </p>
+                  <p>
+                    <span class="users-info-title">{{locationManagement.rootService.languageText.add_walk_longitude}}</span>
+                    <span>{{poi.longitude}}</span>
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="user-options">
+
+                <button class="user-button private-button"
+                        ng-click="locationManagement.editPoi(city.id, poi.id)">
+                  <span class="far fa-edit"></span>
+                </button>
+
+                <button class="users-button delete-button"
+                        ng-click="deletePoipopup = true">
+                  <span class="fas fa-trash-alt"></span>
+                </button>
+
+                <pop-up show="deletePoipopup"
+                        icon-circle="delete-icon"
+                        icon="fas fa-trash-alt"
+                        title="poi.name"
+                        question="{{locationManagement.rootService.languageText.location_delete_poi}}"
+                        show-buttons="locationManagement.userServiceData.users.admin === true"
+                        cancel-button="true"
+                        delete-button="true"
+                        delete-function="locationManagement.deletePoi(poi.id)"
+                        un-delete-button="false"
+                        private-button="false"
+                        publish-button="false"
+                        update-rol-button="false"
+                        downgrade-rol-button="false">
+                </pop-up>
+
+              </div>
+            </div>
+
+            <div class="users-target poi-target-button">
+              <div class="add-walk-button" ng-click="locationManagement.addPoint(city.id); locationManagement.showPoi[$index] = false">
+                <span class="fas fa-plus"></span>
+                <span class="add-walk-text-button">{{locationManagement.rootService.languageText.location_add_poi}} POI</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="add-walk-container" ng-hide="!('language.location_management' | routeSegmentEqualsTo)">
+      <div class="add-walk-button" ng-click="locationManagement.addCity()">
+        <span class="fas fa-plus"></span>
+        <span class="add-walk-text-button">{{locationManagement.rootService.languageText.location_add_city}}</span>
+      </div>
+    </div>
+
+    <div app-view-segment="2"></div>
+
+    <div app-view-segment="3"></div>
+
+    <div app-view-segment="4"></div>
+
+  </div>
+
+</div>

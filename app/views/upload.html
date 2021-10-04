@@ -1,0 +1,82 @@
+<main-menu></main-menu>
+
+<div class="main-background">
+
+  <header class="upload-header">
+    <div class="header-background-container"></div>
+    <div class="header-background"></div>
+    <h1>{{upload.rootService.languageText.upload_title}}</h1>
+  </header>
+
+  <div class="instructions-container">
+    <div class="instruction">
+      <img src="../images/landscape-icon.svg">
+      <br>
+      <span>{{upload.rootService.languageText.upload_instruction_1}}</span>
+    </div>
+    <div class="instruction">
+      <img src="../images/duration-icon.svg">
+      <br>
+      <span>{{upload.rootService.languageText.upload_instruction_2}}</span>
+    </div>
+    <div class="instruction">
+      <img src="../images/polite-icon.svg">
+      <br>
+      <span>{{upload.rootService.languageText.upload_instruction_3}}</span>
+    </div>
+    <div class="instruction">
+      <img src="../images/check-icon.svg">
+      <br>
+      <span>{{upload.rootService.languageText.upload_instruction_4}}</span>
+    </div>
+  </div>
+
+  <form class="upload-form">
+
+    <select ng-change="upload.updatePois()"
+            ng-model="upload.newVideo.city"
+            ng-options="city.id as city.name for city in upload.citiesList">
+    </select>
+
+    <select ng-model="upload.newVideo.poi" ng-show="upload.poiList !== undefined && upload.poiList.length > 0">
+      <option value="" disabled selected>{{upload.rootService.languageText.upload_select_smart}}</option>
+      <option ng-repeat="poi in upload.poiList" value="{{poi.id}}">{{poi.name}}</option>
+    </select>
+
+    <input type="text" placeholder="{{upload.rootService.languageText.upload_new_title}}" ng-model="upload.newVideo.title">
+
+    <textarea placeholder="{{upload.rootService.languageText.upload_description}}" ng-model="upload.newVideo.description"></textarea>
+
+    <input class="inputfile" id="loadFile" type="file" accept="video/*" ng-model="upload.newVideo.video" onchange="angular.element(this).scope().getVideoFromInput()">
+    <label for="loadFile">{{upload.rootService.languageText.upload_record_button}}</label>
+
+    <video id="preview" controls preload="auto" src=""></video>
+
+    <input class="term-checkbox" id="terms" type="checkbox" name="terms" ng-model="upload.newVideo.terms">
+    <label for="terms"><a class="yellow-link" ng-click="upload.goToTerms()">{{upload.rootService.languageText.upload_accept_terms}}</a></label>
+
+    <input class="button-submit" type="submit" value="{{upload.rootService.languageText.upload_send_button}}" ng-click="upload.sendVideo()">
+
+  </form>
+
+  <div class="popup-bg upload-bg"
+       ng-if="upload.openMessageWindow == true">
+    <div class="popup upload-popup">
+
+      <div class="popup-upload-icon upload-check-icon" ng-show="upload.successUpload === true">
+        <span class="fas fa-check"></span>
+      </div>
+
+      <div class="popup-upload-icon upload-error-icon" ng-show="upload.successUpload === false">
+        <span class="fas fa-times"></span>
+      </div>
+
+      <p>{{upload.successMessage}}</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="local-uploading-container uploading-height-100" ng-show="upload.videoService.uploadingVideo">
+  <div class="local-upload-icon"></div>
+</div>

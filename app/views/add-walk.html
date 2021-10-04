@@ -1,0 +1,46 @@
+<main-menu></main-menu>
+
+<div class="home-background">
+
+  <header class="home-header">
+    <h1>{{addWalk.rootService.languageText.add_walk_title}}</h1>
+  </header>
+
+  <div class="form-gallery-container">
+
+    <form name="add-walk" class="add-walk-form">
+
+      <input type="text" placeholder="{{addWalk.rootService.languageText.add_walk_title_name}}" ng-model="addWalk.walk.title">
+      <textarea placeholder="{{addWalk.rootService.languageText.upload_description}}" ng-model="addWalk.walk.description"></textarea>
+
+      <input type="file" accept="image/*" name="walk-image" placeholder="{{addWalk.rootService.languageText.add_walk_image}}" ng-model="addWalk.walk.image">
+
+      <input type="date" placeholder="Date of Walk" ng-model="addWalk.walk.date">
+      <input type="time" placeholder="Hour of Walk" ng-model="addWalk.walk.hour">
+
+      <select ng-change="addWalk.updatePois()"
+              ng-model="addWalk.walk.city"
+              ng-options="city.id as city.name for city in addWalk.citiesList">
+      </select>
+
+      <select ng-model="addWalk.walk.poi" ng-show="addWalk.poiList !== undefined && addWalk.poiList.length > 0">
+        <option value="" disabled selected>{{addWalk.rootService.languageText.upload_select_smart}}</option>
+        <option ng-repeat="poi in addWalk.poiList" value="{{poi.id}}">{{poi.name}}</option>
+      </select>
+
+      <!--<input type="text" placeholder="{{addWalk.rootService.languageText.add_walk_meeting_point}}" ng-model="addWalk.walk.address">-->
+
+      <!--<input type="number" step="any" placeholder="{{addWalk.rootService.languageText.add_walk_latitude}}" ng-model="addWalk.walk.latitude">-->
+      <!--<input type="number" step="any" placeholder="{{addWalk.rootService.languageText.add_walk_longitude}}" ng-model="addWalk.walk.longitude">-->
+
+      <input class="button-submit" type="submit" value="{{addWalk.rootService.languageText.add_walk_button}}" ng-click="addWalk.sendWalk()">
+
+    </form>
+
+  </div>
+
+</div>
+
+<div class="local-uploading-container" ng-show="addWalk.walkService.uploadingWalk">
+  <div class="local-upload-icon"></div>
+</div>

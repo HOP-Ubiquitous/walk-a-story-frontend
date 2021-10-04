@@ -1,0 +1,9 @@
+<form name="add-walk" class="add-walk-form">
+
+  <input type="text" placeholder="POI" ng-model="editPoi.place.poi_name">
+  <input type="number" step="any" placeholder="{{editPoi.rootService.languageText.location_placeholder_latitude}}" ng-model="editPoi.place.poi_latitude">
+  <input type="number" step="any" placeholder="{{editPoi.rootService.languageText.location_placeholder_longitude}}" ng-model="editPoi.place.poi_longitude">
+
+  <input class="button-submit" type="submit" value="{{editPoi.rootService.languageText.location_placeholder_update_poi}}" ng-click="editPoi.editPoi()">
+
+</form>

@@ -1,0 +1,18 @@
+<form name="add-walk" class="add-walk-form">
+
+  <leaflet id="poisMap"
+           data-tap-disabled="true"
+           class="location-map map-locations-management"
+           defaults="defaults"
+           lf-center="centerpoi"
+           event-broadcast="events"
+           markers="markers">
+  </leaflet>
+
+  <input type="text" placeholder="POI" ng-model="addPoi.place.poi_name">
+  <!--<input type="number" step="any" placeholder="{{addPoi.rootService.languageText.location_placeholder_latitude}}" ng-model="addPoi.place.poi_latitude">-->
+  <!--<input type="number" step="any" placeholder="{{addPoi.rootService.languageText.location_placeholder_longitude}}" ng-model="addPoi.place.poi_longitude">-->
+
+  <input class="button-submit" type="submit" value="{{addPoi.rootService.languageText.location_placeholder_add_poi}}" ng-click="addPoi.addPoi()">
+
+</form>

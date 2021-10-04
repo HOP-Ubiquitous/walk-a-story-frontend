@@ -1,0 +1,57 @@
+<div class="background-login">
+  <div class="background-login-upper">
+  </div>
+
+  <form class="login-form">
+
+    <header class="login-header">
+      <h1>Walk a Story <span class="recorder-title">Recorder</span></h1>
+    </header>
+
+    <div class="walk-icon">
+      <img src="../images/walk_logo.svg">
+    </div>
+
+    <input type="text" placeholder="{{login.rootService.languageText.login_input_placeholder}}" ng-model="login.user.username">
+
+    <input type="password" placeholder="{{login.rootService.languageText.login_password}}" ng-model="login.user.password">
+
+    <!--TODO Cambiar función goToHome() por login() cuando el server funcione bien -->
+    <input class="login-button" type="submit" value="{{login.rootService.languageText.login_button}}" ng-click="login.login()">
+
+    <select ng-change="login.rootService.toggleLanguage(login.rootService.currentLanguage)"
+            ng-model="login.rootService.currentLanguage"
+            ng-options="language.code as language.languageName for language in login.rootService.languages">
+    </select>
+
+    <div class="fixed-container">
+
+      <a ng-click="login.goToSignup()">{{login.rootService.languageText.login_register}}</a>
+        -
+      <a ng-click="login.goToTerms()">{{login.rootService.languageText.login_terms}}</a></span>
+        -
+      <a ng-click="login.goToSurvey()">{{login.rootService.languageText.login_opinion}}</a></span>
+
+      <div class="logo-container">
+        <div class="hop-container"></div>
+        <div class="europe-container"></div>
+      </div>
+
+    </div>
+
+  </form>
+
+
+  <div class="popup-bg upload-bg"
+       ng-if="login.userService.openMessageWindow == true">
+    <div class="popup upload-popup">
+
+      <div class="popup-upload-icon upload-error-icon">
+        <span class="fas fa-times"></span>
+      </div>
+
+      <p>{{login.rootService.languageText.errorMessage}}</p>
+    </div>
+  </div>
+
+</div>

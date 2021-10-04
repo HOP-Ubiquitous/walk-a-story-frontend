@@ -1,0 +1,68 @@
+<form name="add-local" class="add-walk-form">
+
+  <leaflet id="places"
+           data-tap-disabled="true"
+           class="location-map map-locations-management"
+           defaults="defaults"
+           lf-center="center"
+           event-broadcast="events"
+           markers="markers">
+  </leaflet>
+
+  <select ng-change="editLocal.updateLocalTypes(type.name)"
+          ng-model="editLocal.local.type"
+          ng-options="type.name for type in editLocal.typeList | orderBy: 'name'">
+  </select>
+
+  <select ng-model="editLocal.local.subtype">
+    <option ng-selected="subtype === editLocal.local.subtype" ng-repeat="subType in editLocal.subTypeList | orderBy: 'name'" value="{{subType.name}}">{{subType.name}}</option>
+  </select>
+
+  <input type="text" placeholder="{{editLocal.rootService.languageText.local_form_title}}" ng-model="editLocal.local.title">
+
+  <!--<input type="text" placeholder="Address" ng-model="editLocal.local.address">-->
+
+  <textarea ng-model="editLocal.local.description">{{editLocal.rootService.languageText.local_form_description}}</textarea>
+
+  <hr>
+
+  <h5>{{editLocal.rootService.languageText.local_worker}}</h5>
+
+  <div class="add-local-workers-container" ng-repeat="worker in editLocal.local.workers">
+
+    <div class="add-local-worker-data">
+      <input type="text" placeholder="{{editLocal.rootService.languageText.local_worker_name}}" ng-model="worker.name">
+      <input type="text" placeholder="{{editLocal.rootService.languageText.local_worker_job}}" ng-model="worker.job">
+    </div>
+
+    <label for="workerImageInput" class="add-local-worker-image-label">
+      <div class="add-local-worker-image" ng-click="worker.photo">
+        <span class="fas fa-plus"></span>
+
+        <img id="workerPreview" src="#" ng-show="editLocal.showWorkerPreview === true">
+      </div>
+
+      <!--<span class="fas fa-trash-alt delete-worker-button"-->
+            <!--ng-click="editLocal.deleteWorker($index)">-->
+      <!--</span>-->
+
+    </label>
+
+    <input id="workerImageInput" class="worker-image-input" type="file" accept="image/*" onchange="angular.element(this).scope().previewWorkerImage(this)" ng-model="worker.photo">
+
+  </div>
+
+  <!--<input class="button-submit" type="button" value="Add Worker" ng-click="editLocal.addWorker()">-->
+
+  <hr>
+
+  <!--<input class="inputfile" id="loadFile" type="file" accept="video/*" ng-model="editLocal.newVideo.video" onchange="angular.element(this).scope().getVideoFromInput()">-->
+  <!--<label for="loadFile">{{editLocal.rootService.languageText.upload_record_button}}</label>-->
+
+  <!--<video id="preview" controls preload="auto" src=""></video>-->
+
+  <!--<hr>-->
+
+  <input class="button-submit" type="submit" value="{{editLocal.rootService.languageText.local_edit_local}}" ng-click="editLocal.editLocal()">
+
+</form>

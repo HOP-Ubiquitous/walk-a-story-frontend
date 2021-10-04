@@ -1,0 +1,250 @@
+<main-menu></main-menu>
+
+<div class="home-background">
+
+  <header class="home-header">
+    <h1>{{walks.rootService.languageText.walks_title}}</h1>
+  </header>
+
+  <filter-menu></filter-menu>
+
+  <!-- TODO Cambiar altura o padding de la capa dependiendo el tipo de usuario para que no quede nada detrás del botón de "Add Walk" -->
+  <div class="gallery-container"
+       ng-class="{ 'gallery-with-padding' : walks.userServiceData.users.admin === true && !('language.walks.location' | routeSegmentStartsWith),
+                   'padding-140-walks' : ('language.walks.place_id' | routeSegmentStartsWith) || ('language.walks.location' | routeSegmentStartsWith) && walks.walkService.selectCity !== '',
+                   'padding-100-walks' : ('language.walks.location' | routeSegmentStartsWith) && walks.walkService.selectCity === '' }">
+
+    <div ng-hide="('language.walks.location' | routeSegmentStartsWith) || ('language.walks.place_id' | routeSegmentStartsWith)">
+
+      <div class="empty-container"
+           ng-show="profile.walkServiceData.walkList.length === 0">
+
+        <div class="empty-icon">
+          <span class="fas fa-hiking"></span>
+        </div>
+
+        <p>There are no walks created,
+          <br>
+          go to <a ng-click="walks.goToAddWalk()">ADD WALKS</a> section</p>
+
+      </div>
+
+      <div class="video-target" ng-repeat="walk in walks.walksFiltered | orderBy: 'date'">
+
+        <img class="walk-image" src="{{ walk.image || '../images/upload-background.jpg' }}">
+
+        <div class="title-container">
+          <h5 ng-click="walks.goToSingleWalk(walk.place_id, walk.caminata_id)">{{walk.title || 'Untitle'}}</h5>
+          <span>{{walk.participants.length}} participants | {{ walk.date | date: 'yyyy-MM-dd HH:mm'}}</span>
+        </div>
+
+        <div class="social-container">
+
+          <div class="button-social"
+               ng-click="socialPopup = true"
+               ng-class="{ 'button-social-active' : share }">
+            <span class="fas fa-share"></span>
+            <br>
+            <span>{{walks.rootService.languageText.post_share}}</span>
+          </div>
+        </div>
+
+        <div class="description-container">
+          <span>{{walk.description | limitTo: 140 || 'Without Description'}}</span>
+          <span ng-if="walk.description.length > 140">...</span>
+          <span class="description-link" ng-click="walks.goToSingleWalk(walk.place_id, walk.caminata_id)">{{walks.rootService.languageText.post_information}}</span>
+        </div>
+
+        <div class="walk-buttons-container">
+
+          <div class="sign-up-walk-button" ng-show="walk.subscription === false" ng-click="walks.signUpWalk(walk.caminata_id)">
+            <span class="fas fa-hiking"></span>
+            <span class="sign-up-walk-text-button">{{walks.rootService.languageText.walks_signup_button}}</span>
+          </div>
+
+          <div class="subscribed-walk-button" ng-show="walk.subscription === true">
+            <span class="fas fa-check"></span>
+            <span class="sign-up-walk-text-button">{{walks.rootService.languageText.walks_subscribed}}</span>
+          </div>
+
+          <div class="gps-walk-button" ng-click="walks.goToLocationWalk(walk.place_id, walk.caminata_id)">
+            <span class="fas fa-map-marker-alt"></span>
+          </div>
+
+        </div>
+
+        <div class="admin-options" ng-show="walks.userServiceData.users.admin === true">
+
+          <button class="admin-button delete-button"
+                  ng-click="deletePopup = true">
+            <span class="fas fa-trash-alt"></span>{{walks.rootService.languageText.walks_delete_button}}
+          </button>
+
+          <button class="admin-button"
+                  ng-click="infoPopup = true; walks.getParticipants(walk.caminata_id)">
+            <span class="fas fa-users"></span>{{walks.rootService.languageText.walks_participants}}
+          </button>
+
+        </div>
+
+        <div class="popup-bg" ng-show="socialPopup">
+          <div class="popup social-popup">
+
+            <div class="button-menu social-close"
+                 ng-click="socialPopup = false">
+              <span class="fas fa-times"></span>
+            </div>
+
+            <div class="popup-social-icon">
+              <span class="fas fa-share"></span>
+            </div>
+            <h1 class="popup-social-title">{{walks.rootService.languageText.walks_share}} {{video.title || 'Untitle'}}</h1>
+
+            <a socialshare
+               socialshare-provider="facebook"
+               socialshare-via="424890874779971"
+               socialshare-type="feed"
+               socialshare-media="http://localhost:9000/#/walks/{{walk.id}}"
+               socialshare-description="'Sign up for this walk '{{walk.title}}' on {{walk.date | date: 'yyyy-MM-dd HH:mm'}} from {{walk.address}} in http://localhost:9000/#/walks/{{walk.id}}. ' + <br> + 'See more walks in Walk a Story. https://br.hopu.eu/'"
+               socialshare-url="https://br.hopu.eu/">
+              <span class="fab fa-facebook-square"></span>
+              <span>Facebook</span>
+            </a>
+
+            <a socialshare
+               socialshare-provider="twitter"
+               socialshare-text="Sign up for this walk '{{walk.title}}' on {{walk.date | date: 'yyyy-MM-dd HH:mm'}} from {{walk.address}} in https://br.hopu.eu/#/walks/{{walk.id}}.
+
+See more walks in Walk a Story. https://br.hopu.eu/
+
+"
+               socialshare-hashtags="walkastory, {{walk.point}}"
+               socialshare-url="https://br.hopu.eu/">
+              <span class="fab fa-twitter-square"></span>
+              <span>Twitter</span>
+            </a>
+
+            <a socialshare
+               socialshare-provider="whatsapp"
+               socialshare-text="Sign up for this walk '{{walk.title}}' on {{walk.date | date: 'yyyy-MM-dd HH:mm'}} from {{walk.address}} in https://br.hopu.eu/#/walks/{{walk.id}}.
+
+See more walks in Walk a Story. https://br.hopu.eu/"
+               socialshare-url="https://br.hopu.eu/">
+              <span class="fab fa-whatsapp-square"></span>
+              <span>Whatsapp</span>
+            </a>
+
+            <a socialshare
+               socialshare-provider="telegram"
+               socialshare-text="Sign up for this walk '{{walk.title}}' on {{walk.date | date: 'yyyy-MM-dd HH:mm'}} from {{walk.address}} in https://br.hopu.eu/#/walks/{{walk.id}}.
+
+See more walks in Walk a Story. https://br.hopu.eu/"
+               socialshare-url="https://br.hopu.eu/">
+              <span class="fab fa-telegram"></span>
+              <span>Telegram</span>
+            </a>
+
+            <a socialshare
+               socialshare-provider="facebook-messenger"
+               socialshare-url="https://br.hopu.eu/">
+              <span class="fab fa-facebook-messenger"></span>
+              <span>Facebook Messenger</span>
+            </a>
+
+          </div>
+        </div>
+
+        <pop-up show="deletePopup"
+                icon-circle="delete-icon"
+                icon="fas fa-trash-alt"
+                title="walk.title"
+                question="{{walks.rootService.languageText.walks_list_delete_walk_message}}"
+                show-buttons="walks.userServiceData.users.admin === true"
+                cancel-button="true"
+                delete-button="true"
+                delete-function="walks.deleteWalk(walk.caminata_id)"
+                un-delete-button="false"
+                private-button="false"
+                publish-button="false"
+                update-rol-button="false"
+                downgrade-rol-button="false">
+        </pop-up>
+
+        <div class="popup-bg" ng-show="infoPopup">
+          <div class="popup">
+            <div class="popup-users-icon publish-icon">
+              <span class="fas fa-users"></span>
+            </div>
+            <h5 class="popup-video-title">{{walk.title || 'Untitle'}}</h5>
+            <p>{{walks.rootService.languageText.walks_list_participant_title}}</p>
+
+            <div class="participants-container">
+
+              <div class="participant-row" ng-repeat="participant in walks.participants">
+
+                <div class="participant-left">
+                  <div class="participant-left-inner">
+                    <span class="fas fa-hiking"></span>
+                  </div>
+                </div>
+
+                <div class="participant-right">
+                  <p><span>User:</span> {{participant.name}}</p>
+                  <p><span>Mail:</span> {{participant.email}}</p>
+                </div>
+
+                <div class="participant-years">
+                  <p>Years:</p>
+                  <p>{{walks.getAge(participant.birth_date)}}</p>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="admin-options popup-options" ng-show="walks.userServiceData.users.admin === true">
+              <button class="admin-button" ng-click="infoPopup = false">{{walks.rootService.languageText.walks_list_participant_cancel}}</button>
+              <button class="admin-button" ng-click="walks.downloadPDF(walk); infoPopup = false"><span class="fas fa-file-download"></span>{{walks.rootService.languageText.walks_list_participant_download}}</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup-bg walks-bg"
+             ng-if="walks.openMessageWindow == true">
+          <div class="popup walks-popup">
+
+            <div class="popup-upload-icon upload-check-icon" ng-show="walks.successUpload === true">
+              <span class="fas fa-check"></span>
+            </div>
+
+            <div class="popup-upload-icon upload-error-icon" ng-show="walks.successUpload === false">
+              <span class="fas fa-times"></span>
+            </div>
+
+            <p>{{walks.successMessage}}</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div app-view-segment="2" ng-hide="('language.walks.place_id.poi_id' | routeSegmentStartsWith)"></div>
+
+    <div app-view-segment="3" ng-hide="('language.walks.place_id.poi_id.walk_id' | routeSegmentEqualsTo)"></div>
+
+    <div app-view-segment="4"></div>
+    <div app-view-segment="5"></div>
+
+  </div>
+
+  <div class="add-walk-container"
+       ng-class="{ 'add-walk-container-hidden' : infoPopup }"
+       ng-show="walks.userServiceData.users.admin === true">
+    <div class="add-walk-button" ng-click="walks.goToAddWalk()">
+      <span class="fas fa-plus"></span>
+      <span class="add-walk-text-button">{{walks.rootService.languageText.add_walk_title}}</span>
+    </div>
+  </div>
+
+</div>

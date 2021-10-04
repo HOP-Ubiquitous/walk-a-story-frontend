@@ -1,0 +1,27 @@
+<main-menu></main-menu>
+
+<div class="back-button" ng-click="profileLocation.goToVideos()">
+  <span class="fas fa-arrow-left"></span>
+</div>
+
+<leaflet id="profile-map"
+         class="location-map"
+         ng-class="{ 'map-video-xxl': profileLocation.dataMarker === undefined && profileLocation.headerTitle === '',
+                     'map-video-xl': profileLocation.dataMarker === undefined && profileLocation.headerTitle !== '',
+                     'map-video-sm': profileLocation.dataMarker !== undefined && profileLocation.headerTitle !== '',
+                     'map-video-only-point-selected': profileLocation.dataMarker !== undefined && profileLocation.headerTitle === ''}"
+         defaults="defaults"
+         lf-center="center"
+         event-broadcast="events"
+         markers="markers">
+</leaflet>
+
+<div class="location-info location-info-0"
+     ng-class="{ 'location-down': profileLocation.dataMarker === undefined }">
+  <div class="location-info-inner">
+    <h5>{{profileLocation.dataMarker.title}}</h5>
+    <hr>
+    <p>{{profileLocation.dataMarker.description | limitTo: 140}}<span ng-show="profileLocation.dataMarker.description.length >= 60">...</span></p>
+    <p class="yellow-link">{{profileLocation.dataMarker.creation_date | limitTo: 16}}</p>
+  </div>
+</div>

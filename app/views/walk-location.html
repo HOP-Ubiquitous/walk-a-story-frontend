@@ -1,0 +1,38 @@
+<main-menu></main-menu>
+
+<div class="place-header" ng-class="{'place-header-40' : walkLocation.getHeaderTitle() !== ''}">
+  <h2>{{walkLocation.getHeaderTitle() || 'Unknown'}}</h2>
+</div>
+
+<div class="back-button" ng-class="{'top-40' : walkLocation.getHeaderTitle() !== ''}" ng-click="walkLocation.goToWalks()">
+  <span class="fas fa-arrow-left"></span>
+</div>
+
+<leaflet id="walk-map"
+         class="location-map"
+         ng-class="{ 'map-xxl': walkLocation.locationInfoStyle === false && walkLocation.dataMarker === undefined && walkLocation.getHeaderTitle() === '',
+                     'map-xxl-selected-city': walkLocation.locationInfoStyle === false && walkLocation.dataMarker === undefined && walkLocation.getHeaderTitle() !== '',
+                     'map-xl': walkLocation.locationInfoStyle === true && walkLocation.dataMarker === undefined && walkLocation.getHeaderTitle() === '',
+                     'map-xl-selected-city': walkLocation.locationInfoStyle === true && walkLocation.dataMarker === undefined && walkLocation.getHeaderTitle() !== '',
+                     'map-m': walkLocation.locationInfoStyle === false && walkLocation.dataMarker !== undefined && walkLocation.getHeaderTitle() === '',
+                     'map-m-selected-city': walkLocation.locationInfoStyle === false && walkLocation.dataMarker !== undefined && walkLocation.getHeaderTitle() !== '',
+                     'map-sm': walkLocation.locationInfoStyle === true && walkLocation.dataMarker !== undefined && walkLocation.getHeaderTitle() === '',
+                     'map-sm-selected-city': walkLocation.locationInfoStyle === true && walkLocation.dataMarker !== undefined && walkLocation.getHeaderTitle() !== ''}"
+         defaults="defaults"
+         lf-center="center"
+         event-broadcast="events"
+         markers="markers"
+         maxbounds="maxbounds">
+</leaflet>
+
+<div class="location-info"
+     ng-class="{ 'location-info-80' : walkLocation.locationInfoStyle === true,
+                 'location-info-0' : walkLocation.locationInfoStyle === false,
+                 'location-down': walkLocation.dataMarker === undefined }">
+  <div class="location-info-inner">
+    <h5>{{walkLocation.dataMarker.title}}</h5>
+    <hr>
+    <p>{{walkLocation.dataMarker.address}}</p>
+    <p class="yellow-link">{{walkLocation.dataMarker.date | date: 'yyyy-MM-dd hh:mm'}}</p>
+  </div>
+</div>
